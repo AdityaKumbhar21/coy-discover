@@ -1,0 +1,16 @@
+packages:
+  - frontend
+  - backend
+
+engineStrict: true
+saveExact: true
+
+# esbuild's install script verifies its platform binary for Vitest/Drizzle tooling.
+allowBuilds:
+  esbuild: true
+
+# Exact stable versions selected during the Phase 1 dependency review.
+minimumReleaseAgeExclude:
+  - "@vitest/mocker@5.1.1"
+  - "@vitest/spy@5.1.1"
+  - vitest@5.1.1

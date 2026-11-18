@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 640" role="img" aria-label="Illustrated profile placeholder">
+  <rect width="480" height="640" fill="#e7e3ef"/>
+  <circle cx="400" cy="80" r="180" fill="#d4c9e8"/>
+  <circle cx="35" cy="590" r="180" fill="#d7dfe8"/>
+  <circle cx="240" cy="245" r="85" fill="#8c7caa"/>
+  <path d="M70 560v-35a170 170 0 0 1 340 0v35z" fill="#8c7caa"/>
+</svg>

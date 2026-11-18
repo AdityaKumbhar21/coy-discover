@@ -1,0 +1,37 @@
+# Dependencies and package-manager state
+node_modules/
+.pnpm-store/
+
+# Framework/compiler output
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# Secrets and environment files (including examples)
+.env*
+*.pem
+*.key
+
+# Local databases, including SQLite journal/WAL/SHM sidecars
+data/
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+
+# Test and temporary output
+coverage/
+tmp/
+*.log
+.DS_Store
+
+# Backend compiler output
+backend/dist/
+
+# Local engineering notes
+/AGENTS.md
+/PLAN.md
+/docs/

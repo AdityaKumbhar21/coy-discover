@@ -1,0 +1,257 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "bff5a58b-f31a-4e70-9131-5ce4d92b4303",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "matches": {
+      "name": "matches",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "profile_low_id": {
+          "name": "profile_low_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "profile_high_id": {
+          "name": "profile_high_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "matches_pair_unique": {
+          "name": "matches_pair_unique",
+          "columns": ["profile_low_id", "profile_high_id"],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "matches_profile_low_id_profiles_id_fk": {
+          "name": "matches_profile_low_id_profiles_id_fk",
+          "tableFrom": "matches",
+          "tableTo": "profiles",
+          "columnsFrom": ["profile_low_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "matches_profile_high_id_profiles_id_fk": {
+          "name": "matches_profile_high_id_profiles_id_fk",
+          "tableFrom": "matches",
+          "tableTo": "profiles",
+          "columnsFrom": ["profile_high_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "matches_id_valid": {
+          "name": "matches_id_valid",
+          "value": "\"matches\".\"id\" BETWEEN 1 AND 9007199254740991"
+        },
+        "matches_pair_canonical": {
+          "name": "matches_pair_canonical",
+          "value": "\"matches\".\"profile_low_id\" < \"matches\".\"profile_high_id\""
+        },
+        "matches_timestamp_valid": {
+          "name": "matches_timestamp_valid",
+          "value": "typeof(\"matches\".\"created_at\") = 'integer' AND \"matches\".\"created_at\" BETWEEN 0 AND 9007199254740991"
+        }
+      }
+    },
+    "profiles": {
+      "name": "profiles",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "age": {
+          "name": "age",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "photo_url": {
+          "name": "photo_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "bio": {
+          "name": "bio",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "city_or_college": {
+          "name": "city_or_college",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "interests": {
+          "name": "interests",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "profiles_id_valid": {
+          "name": "profiles_id_valid",
+          "value": "\"profiles\".\"id\" BETWEEN 1 AND 9007199254740991"
+        },
+        "profiles_name_nonempty": {
+          "name": "profiles_name_nonempty",
+          "value": "length(trim(\"profiles\".\"name\")) > 0"
+        },
+        "profiles_age_valid": {
+          "name": "profiles_age_valid",
+          "value": "typeof(\"profiles\".\"age\") = 'integer' AND \"profiles\".\"age\" BETWEEN 18 AND 99"
+        },
+        "profiles_photo_nonempty": {
+          "name": "profiles_photo_nonempty",
+          "value": "length(trim(\"profiles\".\"photo_url\")) > 0"
+        },
+        "profiles_bio_nonempty": {
+          "name": "profiles_bio_nonempty",
+          "value": "length(trim(\"profiles\".\"bio\")) > 0"
+        },
+        "profiles_location_nonempty": {
+          "name": "profiles_location_nonempty",
+          "value": "length(trim(\"profiles\".\"city_or_college\")) > 0"
+        },
+        "profiles_interests_array": {
+          "name": "profiles_interests_array",
+          "value": "CASE WHEN json_valid(\"profiles\".\"interests\") THEN json_type(\"profiles\".\"interests\") = 'array' AND json_array_length(\"profiles\".\"interests\") > 0 ELSE 0 END"
+        }
+      }
+    },
+    "swipes": {
+      "name": "swipes",
+      "columns": {
+        "actor_id": {
+          "name": "actor_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "target_id": {
+          "name": "target_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "decision": {
+          "name": "decision",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "swipes_actor_id_profiles_id_fk": {
+          "name": "swipes_actor_id_profiles_id_fk",
+          "tableFrom": "swipes",
+          "tableTo": "profiles",
+          "columnsFrom": ["actor_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "swipes_target_id_profiles_id_fk": {
+          "name": "swipes_target_id_profiles_id_fk",
+          "tableFrom": "swipes",
+          "tableTo": "profiles",
+          "columnsFrom": ["target_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "swipes_actor_id_target_id_pk": {
+          "columns": ["actor_id", "target_id"],
+          "name": "swipes_actor_id_target_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "swipes_not_self": {
+          "name": "swipes_not_self",
+          "value": "\"swipes\".\"actor_id\" <> \"swipes\".\"target_id\""
+        },
+        "swipes_decision_valid": {
+          "name": "swipes_decision_valid",
+          "value": "\"swipes\".\"decision\" IN ('like', 'pass')"
+        },
+        "swipes_timestamp_valid": {
+          "name": "swipes_timestamp_valid",
+          "value": "typeof(\"swipes\".\"created_at\") = 'integer' AND \"swipes\".\"created_at\" BETWEEN 0 AND 9007199254740991"
+        }
+      }
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}
