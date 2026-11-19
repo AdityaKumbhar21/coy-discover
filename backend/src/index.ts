@@ -1,5 +1,8 @@
-import { app } from "./app.js";
+import { createApp } from "./app.js";
 import { env } from "./config/index.js";
+import { createDiscoverServices } from "./services/discover.js";
+
+const app = createApp(createDiscoverServices(process.env));
 
 const server = app.listen(env.BACKEND_PORT, env.BACKEND_HOST, () => {
   console.log(
