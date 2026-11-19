@@ -45,6 +45,7 @@ export default defineConfig([
     },
   },
   globalIgnores([
+    "files/**",
     "**/.next/**",
     "backend/dist/**",
     "out/**",

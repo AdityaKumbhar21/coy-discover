@@ -1,12 +1,389 @@
 @import "tailwindcss";
 
-:root {
-  color-scheme: light;
-  background: #faf9f6;
-  color: #20201e;
-  font-family: Arial, Helvetica, sans-serif;
+/* ------------------------------------------------------------------
+   Coy design tokens
+   Neo-brutalist: ink outlines, hard offset shadows, big radii,
+   tight heavy display type, flat candy colours.
+------------------------------------------------------------------- */
+@theme {
+  /* Colour */
+  --color-ink: #17121f;
+  --color-ink-soft: #3b3546;
+  --color-muted: #6b6878;
+  --color-line: #e8e6ef;
+  --color-field: #f5f3f9;
+  --color-pink: #ec4e82;
+  --color-pink-wash: #fbe6ef;
+  --color-berry: #c8325f;
+  --color-mint: #d2f3e0;
+  --color-sun: #ffe76a;
+
+  /* Type: system stack; drop a licensed grotesk in front when available */
+  --font-sans:
+    "Cabinet Grotesk", "Satoshi", "General Sans", ui-sans-serif, system-ui,
+    -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-sans);
+
+  /* Radii */
+  --radius-card: 28px;
+  --radius-tile: 20px;
+  --radius-pill: 999px;
+
+  /* Hard offset shadows (ink, no blur) */
+  --shadow-pop: 4px 5px 0 var(--color-ink);
+  --shadow-pop-sm: 3px 4px 0 var(--color-ink);
+
+  /* Motion */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-quick: 140ms;
+  --duration-base: 220ms;
 }
 
-body {
-  margin: 0;
+:root {
+  --border-w: 2.5px;
+  --stage-w: 400px;
+  --nav-h: 68px; /* bottom navigation height, excluding safe area */
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    display: grid;
+    min-height: 100dvh;
+    place-items: center;
+    background: #fff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
+  /* Lock page scroll behind the match dialog */
+  body:has(dialog[open]) {
+    overflow: hidden;
+  }
+}
+
+@layer components {
+  /* Full-height page with a mobile-width column, without a device frame. */
+  .coy-app {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 440px;
+    height: 100dvh;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .coy-header {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: calc(12px + env(safe-area-inset-top, 0px)) 20px 12px;
+  }
+
+  .coy-main {
+    flex: 1;
+    min-height: 0;
+    padding: 0 16px 12px;
+    overflow: auto;
+    overscroll-behavior-y: contain;
+  }
+
+  .coy-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    min-height: 320px;
+  }
+
+  .coy-swipe-stage {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .coy-profile-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .coy-profile-photo {
+    flex: 1 0 100px;
+    min-height: 0;
+  }
+
+  .coy-profile-details {
+    display: flex;
+    flex: 0 1 auto;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 0;
+    padding: 12px 16px;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+  }
+
+  /* Surfaces */
+  .coy-surface {
+    background: #fff;
+    border: var(--border-w) solid var(--color-ink);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-pop);
+  }
+
+  .coy-tile {
+    background: #fff;
+    border: var(--border-w) solid var(--color-ink);
+    border-radius: var(--radius-tile);
+    box-shadow: var(--shadow-pop-sm);
+    overflow: hidden;
+  }
+
+  /* Buttons */
+  .coy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 56px;
+    padding: 0 24px;
+    border: var(--border-w) solid var(--color-ink);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-pop-sm);
+    color: var(--color-ink);
+    font-size: 1.0625rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    transition:
+      transform var(--duration-quick) var(--ease-soft),
+      box-shadow var(--duration-quick) var(--ease-soft);
+  }
+
+  .coy-btn--like {
+    background: var(--color-pink);
+  }
+
+  .coy-btn--pass {
+    background: #fff;
+  }
+
+  .coy-btn--sm {
+    min-height: 44px;
+    padding: 0 18px;
+    font-size: 0.9375rem;
+  }
+
+  @media (hover: hover) {
+    .coy-btn:hover:not(:disabled) {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 5px 0 var(--color-ink);
+    }
+  }
+
+  .coy-btn:active:not(:disabled) {
+    transform: translate(3px, 4px);
+    box-shadow: 0 0 0 var(--color-ink);
+  }
+
+  .coy-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  /* The button whose decision is being saved stays fully visible */
+  .coy-btn[aria-busy="true"]:disabled {
+    cursor: progress;
+    opacity: 1;
+  }
+
+  /* Chips */
+  .coy-chip {
+    display: inline-flex;
+    max-width: 100%;
+    align-items: center;
+    padding: 4px 12px;
+    background: var(--color-field);
+    border: 2px solid var(--color-ink);
+    border-radius: var(--radius-pill);
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+
+  .coy-age {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 12px;
+    background: var(--color-sun);
+    border: 2px solid var(--color-ink);
+    border-radius: var(--radius-pill);
+    font-size: 1.125rem;
+    letter-spacing: 0;
+    transform: rotate(-3deg);
+  }
+
+  /* LIKE / PASS stamps shown over the photo */
+  .coy-stamp {
+    position: absolute;
+    top: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: var(--border-w) solid var(--color-ink);
+    border-radius: 12px;
+    box-shadow: var(--shadow-pop-sm);
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.9) rotate(var(--tilt));
+    transition:
+      opacity var(--duration-quick) ease,
+      transform var(--duration-base) var(--ease-soft);
+  }
+
+  .coy-stamp--like {
+    --tilt: -10deg;
+    left: 16px;
+    background: var(--color-pink);
+    color: var(--color-ink);
+  }
+
+  .coy-stamp--pass {
+    --tilt: 10deg;
+    right: 16px;
+    background: var(--color-ink);
+    color: #fff;
+    box-shadow: 3px 4px 0 var(--color-pink);
+  }
+
+  [data-feedback="like"] .coy-stamp--like,
+  [data-feedback="pass"] .coy-stamp--pass {
+    opacity: 1;
+    transform: scale(1) rotate(var(--tilt));
+  }
+
+  .coy-profile-card[aria-busy="true"] {
+    cursor: progress;
+  }
+
+  /* Inline error with retry */
+  .coy-alert {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--color-pink-wash);
+    border: var(--border-w) solid var(--color-ink);
+    border-radius: 18px;
+  }
+
+  /* Loading skeleton */
+  .coy-skeleton {
+    background: linear-gradient(
+        100deg,
+        transparent 30%,
+        rgb(255 255 255 / 0.65) 50%,
+        transparent 70%
+      )
+      var(--color-field);
+    background-size: 220% 100%;
+    animation: coy-shimmer 1.6s linear infinite;
+  }
+
+  @keyframes coy-shimmer {
+    from {
+      background-position: 120% 0;
+    }
+    to {
+      background-position: -120% 0;
+    }
+  }
+
+  /* Match dialog */
+  .coy-dialog {
+    width: min(360px, calc(100vw - 32px));
+    max-height: calc(100dvh - 32px);
+    margin: auto;
+    padding: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: #fff;
+    color: var(--color-ink);
+    border: var(--border-w) solid var(--color-ink);
+    border-radius: var(--radius-card);
+    box-shadow: 6px 7px 0 var(--color-ink);
+  }
+
+  .coy-dialog::backdrop {
+    background: rgb(23 18 31 / 0.6);
+  }
+
+  .coy-dialog[open] {
+    animation: coy-pop-in var(--duration-base) var(--ease-soft);
+  }
+
+  @keyframes coy-pop-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .coy-confetti {
+    position: absolute;
+    border: 2px solid var(--color-ink);
+  }
+}
+
+/* Reduced motion: no animation, instant state changes */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .coy-btn:hover:not(:disabled),
+  .coy-btn:active:not(:disabled) {
+    transform: none;
+  }
 }

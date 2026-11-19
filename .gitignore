@@ -35,3 +35,6 @@ backend/dist/
 /AGENTS.md
 /PLAN.md
 /docs/
+
+# Original UI handoff; integrated components live under frontend/src
+/files/
