@@ -6,7 +6,7 @@ A standalone, mobile-first Discover tab built for **Part B of the Coy SDE Intern
 
 **[Watch the screen recording](assets/coy-discover-demo.mov)**
 
-The recording is included in the repository as a QuickTime `.mov` file. If your browser does not preview it, download it and open it in a video player.
+
 
 ## Features
 
