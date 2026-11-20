@@ -1,6 +1,6 @@
 # Coy Discover
 
-A standalone, mobile-first Discover tab built for **Part B of the Coy SDE Intern assignment**. Users can browse profiles, like or pass with gestures or buttons, and view mutual matches. Express controls matching and privacy; SQLite stores progress across reloads and server restarts.
+ Users can browse profiles, like or pass with gestures or buttons, and view mutual matches. Express controls matching and privacy; SQLite stores progress across reloads and server restarts.
 
 ## Demo
 
